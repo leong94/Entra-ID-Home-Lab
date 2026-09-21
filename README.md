@@ -29,11 +29,21 @@ Created a few test users in the tenant:
 ### Groups
 Created a security group, `IT-Support`, with **Assigned** membership. Added `jsmith` and `tlee` as members, intentionally leaving `agarcia` out to later test policy scoping.
 
+<img width="707" height="271" alt="image" src="https://github.com/user-attachments/assets/1454b5cd-13ce-4281-9b95-bcab42814bd4" />
+
 ### Licensing
 Assigned Business Premium licenses to `jsmith` and `tlee`, since Conditional Access only applies to licensed users.
 
+<img width="522" height="59" alt="image" src="https://github.com/user-attachments/assets/3e7a459d-af74-432d-9efb-689108ac45bd" />
+
 ### MFA — Security Defaults
 Enabled Security Defaults as a baseline, which forces MFA registration tenant-wide. Verified by signing in as `jsmith`, who was prompted to set up Microsoft Authenticator.
+
+<img width="692" height="87" alt="image" src="https://github.com/user-attachments/assets/627e9f7c-7f63-463f-8ddf-aab72037cde8" />
+
+<img width="263" height="206" alt="image" src="https://github.com/user-attachments/assets/34395920-95bf-43b1-95d9-720e3245713c" />
+
+
 
 ### Conditional Access Policy
 Built a custom policy, `Require MFA for IT-Support Group`:
@@ -43,6 +53,8 @@ Built a custom policy, `Require MFA for IT-Support Group`:
 
 Tested in **Report-only** mode first to confirm correct targeting before enforcing it. Had to disable Security Defaults first, since Entra doesn't allow both to run active at the same time.
 
+<img width="342" height="444" alt="image" src="https://github.com/user-attachments/assets/a6713a45-081e-4084-ace1-678fa617693b" />
+
 **Verification:**
 - `jsmith` (in the group) was required to complete MFA on sign-in
 - `agarcia` (not in the group) signed in without an MFA prompt
@@ -51,6 +63,8 @@ One extra troubleshooting step: disabling Security Defaults auto-created several
 
 ### Least-Privilege Admin Role
 Assigned the **Helpdesk Administrator** role to `tlee` instead of Global Administrator — a role scoped to tasks like password resets and license management, without tenant-wide control.
+
+<img width="491" height="129" alt="image" src="https://github.com/user-attachments/assets/1380b121-ba1b-45be-9d1f-425b80bcaba9" />
 
 ## Troubleshooting Notes
 
