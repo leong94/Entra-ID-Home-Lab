@@ -18,10 +18,13 @@ A hands-on lab covering Microsoft Entra ID (formerly Azure AD) — the cloud ide
 - Used the Business Premium trial as a working fallback — creates a fully functional tenant with the same licensing tier (Entra ID P1) needed for Conditional Access
 
 ### Users
-Created test users in the tenant:
+Created a few test users in the tenant:
 - jsmith (Jordan Smith)
 - agarcia (Ana Garcia)
 - tlee (Tom Lee)
+
+<img width="477" height="146" alt="image" src="https://github.com/user-attachments/assets/c2a7da04-2885-467e-a8a2-e06408ea9718" />
+
 
 ### Groups
 Created a security group, `IT-Support`, with **Assigned** membership. Added `jsmith` and `tlee` as members, intentionally leaving `agarcia` out to later test policy scoping.
