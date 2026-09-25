@@ -97,15 +97,14 @@ Simulated a full offboarding process for `jsmith` to ensure access is genuinely 
 - **Security Defaults vs. Conditional Access conflict:** Entra requires Security Defaults to be disabled before a Conditional Access policy can be enabled or evaluated, even in Report-only mode.
 - **Sign-in logs:** Conditional Access results only appear under completed *interactive* sign-ins, not non-interactive/background sign-in events.
 - **Microsoft preset policies:** Disabling Security Defaults automatically creates baseline Conditional Access policies. These need to be reviewed and adjusted when testing custom policies to avoid overlapping results.
-- **"Sign out of all sessions" missing:** This option disappears once an account is already blocked, since blocking already triggers automatic session cleanup within 60 minutes. Revoke sessions manually before blocking if immediate session termination is required.
 
 ## Skills Demonstrated
 
 - Microsoft Entra ID tenant provisioning
-- User and group management in a cloud identity platform
-- License assignment and its relationship to feature availability
+- User and group management
+- License assignment
 - MFA configuration (Security Defaults)
 - Conditional Access policy design, Report-only testing, and enforcement
 - Least-privilege administrative role assignment
-- Real-world troubleshooting of identity and access configuration conflicts
-- Offboarding and deprovisioning workflow, including sign-in blocking, session management, and group/license removal
+- Identity troubleshooting (policy conflicts, sign-in log analysis)
+- Offboarding and deprovisioning workflow
