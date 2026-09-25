@@ -5,20 +5,20 @@ A hands-on lab covering Microsoft Entra ID (formerly Azure AD) — the cloud ide
 ## Environment
 
 | Component | Details |
-|-----------|---------|
+| --- | --- |
 | Platform | Microsoft Entra ID |
-| Tenant Type | Microsoft 365 Business Premium (trial) |
+| Tenant type | Microsoft 365 Business Premium (trial) |
 | Domain | LabCorpIT.onmicrosoft.com |
 | License | Entra ID P1 (included with Business Premium) |
 
-## What Was Built
+Tenant provisioned through a Microsoft 365 Business Premium trial after the free Developer Program sandbox rejected the signup. Same P1 licensing either way, so nothing in the lab depended on which path worked.
 
-### Tenant Setup
-- Attempted the free Microsoft 365 Developer Program sandbox, but was rejected with a "does not qualify" message (a known, common issue with tightened eligibility rules)
-- Used the Business Premium trial as a working fallback — creates a fully functional tenant with the same licensing tier (Entra ID P1) needed for Conditional Access
+
+  
+## Identity Setup
 
 ### Users
-Created a few test users in the tenant:
+Created three accounts to test policies against.
 - jsmith (Jordan Smith)
 - agarcia (Ana Garcia)
 - tlee (Tom Lee)
@@ -27,7 +27,7 @@ Created a few test users in the tenant:
 
 
 ### Groups
-Created a security group, `IT-Support`, with **Assigned** membership. Added `jsmith` and `tlee` as members, intentionally leaving `agarcia` out to later test policy scoping.
+Created a security group, `IT-Support`, with **Assigned** membership. Added `jsmith` and `tlee` as members, and left agarcia out on purpose to test policy scoping against.
 
 <img width="707" height="271" alt="image" src="https://github.com/user-attachments/assets/1454b5cd-13ce-4281-9b95-bcab42814bd4" />
 
@@ -35,6 +35,9 @@ Created a security group, `IT-Support`, with **Assigned** membership. Added `jsm
 Assigned Business Premium licenses to `jsmith` and `tlee`, since Conditional Access only applies to licensed users.
 
 <img width="522" height="59" alt="image" src="https://github.com/user-attachments/assets/3e7a459d-af74-432d-9efb-689108ac45bd" />
+
+
+## Security Configuration
 
 ### MFA — Security Defaults
 Enabled Security Defaults as a baseline, which forces MFA registration tenant-wide. Verified by signing in as `jsmith`, who was prompted to set up Microsoft Authenticator.
@@ -65,6 +68,9 @@ One extra troubleshooting step: disabling Security Defaults auto-created several
 Assigned the **Helpdesk Administrator** role to `tlee` instead of Global Administrator — a role scoped to tasks like password resets and license management, without tenant-wide control.
 
 <img width="491" height="129" alt="image" src="https://github.com/user-attachments/assets/1380b121-ba1b-45be-9d1f-425b80bcaba9" />
+
+
+## Lifecycle Management
 
 ### Offboarding & Deprovisioning
 
