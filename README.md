@@ -23,18 +23,18 @@ Created three accounts to test policies against.
 - agarcia (Ana Garcia)
 - tlee (Tom Lee)
 
-<img width="477" height="146" alt="image" src="https://github.com/user-attachments/assets/c2a7da04-2885-467e-a8a2-e06408ea9718" />
+
 
 
 ### Groups
 Created a security group, `IT-Support`, with **Assigned** membership. Added `jsmith` and `tlee` as members, and left agarcia out on purpose to test policy scoping against.
 
-<img width="707" height="271" alt="image" src="https://github.com/user-attachments/assets/1454b5cd-13ce-4281-9b95-bcab42814bd4" />
+
 
 ### Licensing
 Assigned Business Premium licenses to `jsmith` and `tlee`, since Conditional Access only applies to licensed users.
 
-<img width="522" height="59" alt="image" src="https://github.com/user-attachments/assets/3e7a459d-af74-432d-9efb-689108ac45bd" />
+
 
 
 ## Security Configuration
@@ -42,9 +42,7 @@ Assigned Business Premium licenses to `jsmith` and `tlee`, since Conditional Acc
 ### MFA — Security Defaults
 Enabled Security Defaults as a baseline, which forces MFA registration tenant-wide. Verified by signing in as `jsmith`, who was prompted to set up Microsoft Authenticator.
 
-<img width="692" height="87" alt="image" src="https://github.com/user-attachments/assets/627e9f7c-7f63-463f-8ddf-aab72037cde8" />
 
-<img width="263" height="206" alt="image" src="https://github.com/user-attachments/assets/34395920-95bf-43b1-95d9-720e3245713c" />
 
 
 
@@ -56,7 +54,7 @@ Built a custom policy, `Require MFA for IT-Support Group`:
 
 Tested in **Report-only** mode first to confirm correct targeting before enforcing it. Had to disable Security Defaults first, since Entra doesn't allow both to run active at the same time.
 
-<img width="342" height="444" alt="image" src="https://github.com/user-attachments/assets/a6713a45-081e-4084-ace1-678fa617693b" />
+
 
 **Verification:**
 - `jsmith` (in the group) was required to complete MFA on sign-in
@@ -64,10 +62,12 @@ Tested in **Report-only** mode first to confirm correct targeting before enforci
 
 One extra troubleshooting step: disabling Security Defaults auto-created several Microsoft preset Conditional Access policies, including one requiring MFA for all users. That policy had to be set to Report-only so the test against `agarcia` would accurately reflect only the custom policy's scope.
 
-### Least-Privilege Admin Role
-Assigned the **Helpdesk Administrator** role to `tlee` instead of Global Administrator — a role scoped to tasks like password resets and license management, without tenant-wide control.
+### Least-privilege admin role
 
-<img width="491" height="129" alt="image" src="https://github.com/user-attachments/assets/1380b121-ba1b-45be-9d1f-425b80bcaba9" />
+Gave `tlee` the Helpdesk Administrator role instead of Global Administrator. It covers the usual help desk work — password resets, license management — without handing over the whole tenant. This is the role I'd actually be assigned in a real help desk job, so it was the obvious one to practice with.
+
+
+
 
 
 ## Lifecycle Management
@@ -76,21 +76,13 @@ Assigned the **Helpdesk Administrator** role to `tlee` instead of Global Adminis
 
 Simulated a full offboarding process for `jsmith` to ensure access is genuinely revoked, not just partially removed.
 
-**Blocked sign-in** — the first and most important step, since it stops all future login attempts. Learned that blocking also automatically signs a user out of all active sessions within 60 minutes, so a separate manual session revocation isn't strictly necessary unless immediate cutoff is required (e.g., a security incident).
+**1. Blocked sign-in first.** This is the step that matters most, since it stops all future logins. Blocking also revokes refresh tokens, so active sessions die out as their access tokens expire (within the hour). Unless it's a security incident where someone needs to be out *right now*, that's good enough without a separate manual session revocation.
 
+**2. Removed group memberships.** Pulled `jsmith` out of `IT-Support`. A blocked account isn't dangerous on its own, but if someone ever unblocks it by mistake — a wrong click on a bulk action, a bad script — leftover group memberships mean instant full access again. Removing them turns an accidental unblock into an empty shell instead of a live security problem.
 
+**3. Removed the license.** Unassigned Business Premium to free the seat and cut the Exchange/Teams/SharePoint access tied to it.
 
-**Removed group membership** — removed `jsmith` from `IT-Support` so he's no longer in scope for the Conditional Access policy, even if the account were ever unblocked by mistake later.
-
-
-
-**Removed the license** — unassigned Business Premium to free the seat and cut off Exchange/Teams/SharePoint access tied to it.
-
-
-
-**Why this order matters:** blocking sign-in should happen alongside or before other cleanup steps, but revoking active sessions specifically needs to happen *before* blocking, if done manually — some tenants remove the "Sign out of all sessions" option once an account is already blocked, since blocking already handles session cleanup within the hour.
-
-**Why remove access beyond just blocking:** a blocked account is not a security risk on its own, but leaving licenses and group memberships in place means an accidental unblock (a wrong click on a bulk action, a scripting error) would instantly restore full access. Removing everything else limits that risk — an accidentally-unblocked account with no license and no groups is effectively an empty shell rather than a live security exposure
+   
 ## Troubleshooting Notes
 
 - **Developer Program rejection:** Common right now due to tightened eligibility. Business Premium trial is a reliable fallback that supports every step in this lab.
