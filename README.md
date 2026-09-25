@@ -57,10 +57,12 @@ Built a custom policy, `Require MFA for IT-Support Group`:
 Ran it in Report-only mode first to confirm the targeting before enforcing anything. Had to disable Security Defaults first, since Entra doesn't allow both to run active at the same time.
 
 
-
 **Verification:**
 - `jsmith` (in the group) was required to complete MFA on sign-in
 - `agarcia` (not in the group) signed in without an MFA prompt
+
+  
+<img src="screenshots/ca-policy-config.png" width="400" alt="Conditional Access policy configuration">
 
 
 ### Least-privilege admin role
@@ -82,6 +84,7 @@ Simulated a full offboarding process for `jsmith` to ensure access is fully revo
 **2. Removed group memberships.** Pulled `jsmith` out of `IT-Support`. Removing them prevents a security problem if they were to get unblocked by mistake.
 
 **3. Removed the license.** Unassigned Business Premium to free the seat and cut the Exchange/Teams/SharePoint access tied to it.
+
 
 ![Offboarding audit log for jsmith](screenshots/offboarding-audit-log.png)
    
