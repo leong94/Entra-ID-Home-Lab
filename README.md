@@ -1,6 +1,8 @@
 # Entra-ID-Home-Lab
 
-A hands-on lab covering Microsoft Entra ID (formerly Azure AD) — the cloud identity platform most businesses now use. Built in a Microsoft 365 Business Premium trial tenant, this project covers user and group management, licensing, MFA, Conditional Access, least-privilege admin roles, and full offboarding/deprovisioning.
+A hands-on lab covering Microsoft Entra ID (formerly Azure AD) — the cloud identity platform most businesses now use. Built in a Microsoft 365 Business Premium trial tenant, this project covers user and group management, licensing, MFA, Conditional Access, least-privilege admin roles, and full offboarding/deprovisioning. Built to get practical, hands-on experience with common identity and access management tasks
+
+*Built September 2026.*
 
 ## Environment
 
@@ -93,7 +95,7 @@ Simulated a full offboarding process for `jsmith` to ensure access is fully revo
 
 - Microsoft Entra ID tenant provisioning
 - User and group management
-- Licenses assignments to users
+- License assignment to users
 - Multi-factor authentication (MFA) configurations enabled and tested
 - Conditional Access policy created and verified
 - Least-privilege administrative role assignment
