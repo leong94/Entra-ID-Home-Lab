@@ -11,7 +11,7 @@ A hands-on lab covering Microsoft Entra ID (formerly Azure AD) — the cloud ide
 | Domain | LabCorpIT.onmicrosoft.com |
 | License | Entra ID P1 (included with Business Premium) |
 
-Tenant provisioned through a Microsoft 365 Business Premium trial after the free Developer Program sandbox rejected the signup. Same P1 licensing either way, so nothing in the lab depended on which path worked.
+Tenant provisioned through a Microsoft 365 Business Premium trial after getting the message of not qualifying for the free Developer Program sandbox signup.
 
 
   
@@ -40,7 +40,7 @@ Assigned Business Premium licenses to `jsmith` and `tlee`, since Conditional Acc
 ## Security Configuration
 
 ### MFA — Security Defaults
-Enabled Security Defaults as a baseline, which forces MFA registration tenant-wide. Verified by signing in as `jsmith`, who was prompted to set up Microsoft Authenticator.
+Confirmed Security Defaults was already enabled by default, which forces MFA registration.  Signed in as jsmith to confirm and got the Microsoft Authenticator setup prompt. Worked as expected.
 
 
 
@@ -50,9 +50,9 @@ Enabled Security Defaults as a baseline, which forces MFA registration tenant-wi
 Built a custom policy, `Require MFA for IT-Support Group`:
 - Scoped to the `IT-Support` group only (not all users)
 - Applied to all cloud apps
-- Required MFA on grant
+- Grants access only with MFA
 
-Tested in **Report-only** mode first to confirm correct targeting before enforcing it. Had to disable Security Defaults first, since Entra doesn't allow both to run active at the same time.
+Ran it in Report-only mode first to confirm the targeting before enforcing anything. Had to disable Security Defaults first, since Entra doesn't allow both to run active at the same time.
 
 
 
@@ -60,7 +60,6 @@ Tested in **Report-only** mode first to confirm correct targeting before enforci
 - `jsmith` (in the group) was required to complete MFA on sign-in
 - `agarcia` (not in the group) signed in without an MFA prompt
 
-One extra troubleshooting step: disabling Security Defaults auto-created several Microsoft preset Conditional Access policies, including one requiring MFA for all users. That policy had to be set to Report-only so the test against `agarcia` would accurately reflect only the custom policy's scope.
 
 ### Least-privilege admin role
 
@@ -74,11 +73,11 @@ Gave `tlee` the Helpdesk Administrator role instead of Global Administrator. It 
 
 ### Offboarding & Deprovisioning
 
-Simulated a full offboarding process for `jsmith` to ensure access is genuinely revoked, not just partially removed.
+Simulated a full offboarding process for `jsmith` to ensure access is fully revoked, not just partially removed.
 
-**1. Blocked sign-in first.** This is the step that matters most, since it stops all future logins. Blocking also revokes refresh tokens, so active sessions die out as their access tokens expire (within the hour). Unless it's a security incident where someone needs to be out *right now*, that's good enough without a separate manual session revocation.
+**1. Blocked sign-in first.** This is the step that matters most, since it stops all future logins. Blocking also revokes refresh tokens, so active sessions die out as their access tokens expire (within the hour).
 
-**2. Removed group memberships.** Pulled `jsmith` out of `IT-Support`. A blocked account isn't dangerous on its own, but if someone ever unblocks it by mistake — a wrong click on a bulk action, a bad script — leftover group memberships mean instant full access again. Removing them turns an accidental unblock into an empty shell instead of a live security problem.
+**2. Removed group memberships.** Pulled `jsmith` out of `IT-Support`. Removing them prevents a security problem if they were to get unblocked by mistake.
 
 **3. Removed the license.** Unassigned Business Premium to free the seat and cut the Exchange/Teams/SharePoint access tied to it.
 
@@ -94,9 +93,8 @@ Simulated a full offboarding process for `jsmith` to ensure access is genuinely 
 
 - Microsoft Entra ID tenant provisioning
 - User and group management
-- License assignment
-- MFA configuration (Security Defaults)
-- Conditional Access policy design, Report-only testing, and enforcement
+- Licenses assignments to users
+- Multi-factor authentication (MFA) configurations enabled and tested
+- Conditional Access policy created and verified
 - Least-privilege administrative role assignment
-- Identity troubleshooting (policy conflicts, sign-in log analysis)
 - Offboarding and deprovisioning workflow
