@@ -1,6 +1,6 @@
 # Entra-ID-Home-Lab
 
-A hands-on lab covering Microsoft Entra ID (formerly Azure AD) — the cloud identity platform most businesses now use. Built in a Microsoft 365 Business Premium trial tenant, this project covers user and group management, licensing, MFA, Conditional Access, and least-privilege admin roles.
+A hands-on lab covering Microsoft Entra ID (formerly Azure AD) — the cloud identity platform most businesses now use. Built in a Microsoft 365 Business Premium trial tenant, this project covers user and group management, licensing, MFA, Conditional Access, least-privilege admin roles, and full offboarding/deprovisioning.
 
 ## Environment
 
@@ -66,13 +66,32 @@ Assigned the **Helpdesk Administrator** role to `tlee` instead of Global Adminis
 
 <img width="491" height="129" alt="image" src="https://github.com/user-attachments/assets/1380b121-ba1b-45be-9d1f-425b80bcaba9" />
 
+### Offboarding & Deprovisioning
+
+Simulated a full offboarding process for `jsmith` to ensure access is genuinely revoked, not just partially removed.
+
+**Blocked sign-in** — the first and most important step, since it stops all future login attempts. Learned that blocking also automatically signs a user out of all active sessions within 60 minutes, so a separate manual session revocation isn't strictly necessary unless immediate cutoff is required (e.g., a security incident).
+
+
+
+**Removed group membership** — removed `jsmith` from `IT-Support` so he's no longer in scope for the Conditional Access policy, even if the account were ever unblocked by mistake later.
+
+
+
+**Removed the license** — unassigned Business Premium to free the seat and cut off Exchange/Teams/SharePoint access tied to it.
+
+
+
+**Why this order matters:** blocking sign-in should happen alongside or before other cleanup steps, but revoking active sessions specifically needs to happen *before* blocking, if done manually — some tenants remove the "Sign out of all sessions" option once an account is already blocked, since blocking already handles session cleanup within the hour.
+
+**Why remove access beyond just blocking:** a blocked account is not a security risk on its own, but leaving licenses and group memberships in place means an accidental unblock (a wrong click on a bulk action, a scripting error) would instantly restore full access. Removing everything else limits that risk — an accidentally-unblocked account with no license and no groups is effectively an empty shell rather than a live security exposure
 ## Troubleshooting Notes
 
 - **Developer Program rejection:** Common right now due to tightened eligibility. Business Premium trial is a reliable fallback that supports every step in this lab.
 - **Security Defaults vs. Conditional Access conflict:** Entra requires Security Defaults to be disabled before a Conditional Access policy can be enabled or evaluated, even in Report-only mode.
 - **Sign-in logs:** Conditional Access results only appear under completed *interactive* sign-ins, not non-interactive/background sign-in events.
-- **Report-only results location:** Report-only policy results appear under a separate "Report-only" tab in the sign-in log details, not the main "Conditional Access" tab (which shows enforced policies only).
 - **Microsoft preset policies:** Disabling Security Defaults automatically creates baseline Conditional Access policies. These need to be reviewed and adjusted when testing custom policies to avoid overlapping results.
+- **"Sign out of all sessions" missing:** This option disappears once an account is already blocked, since blocking already triggers automatic session cleanup within 60 minutes. Revoke sessions manually before blocking if immediate session termination is required.
 
 ## Skills Demonstrated
 
@@ -83,3 +102,4 @@ Assigned the **Helpdesk Administrator** role to `tlee` instead of Global Adminis
 - Conditional Access policy design, Report-only testing, and enforcement
 - Least-privilege administrative role assignment
 - Real-world troubleshooting of identity and access configuration conflicts
+- Offboarding and deprovisioning workflow, including sign-in blocking, session management, and group/license removal
