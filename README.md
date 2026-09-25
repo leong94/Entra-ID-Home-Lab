@@ -44,7 +44,7 @@ Assigned Business Premium licenses to `jsmith` and `tlee`, since Conditional Acc
 ### MFA — Security Defaults
 Confirmed Security Defaults was already enabled by default, which forces MFA registration.  Signed in as jsmith to confirm and got the Microsoft Authenticator setup prompt. Worked as expected.
 
-
+<img src="screenshots/mfa-prompt.png" width="400" alt="MFA registration prompt for jsmith">
 
 
 
@@ -83,6 +83,7 @@ Simulated a full offboarding process for `jsmith` to ensure access is fully revo
 
 **3. Removed the license.** Unassigned Business Premium to free the seat and cut the Exchange/Teams/SharePoint access tied to it.
 
+![Offboarding audit log for jsmith](screenshots/offboarding-audit-log.png)
    
 ## Troubleshooting Notes
 
